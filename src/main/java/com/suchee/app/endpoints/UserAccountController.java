@@ -30,7 +30,7 @@ public class UserAccountController {
         return ResponseEntity.ok(users);
     }
 
-    @PutMapping
+    @PutMapping("/create")
     public  ResponseEntity<UserDTO> createUser(@RequestBody UserCreateDTO userCreateDTO){
         UserDTO savedUser = this.userService.createUser(userCreateDTO);
         return ResponseEntity.ok(savedUser);
