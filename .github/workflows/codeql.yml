@@ -3,8 +3,6 @@ name: CodeQL Analysis + Build
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
 
 permissions:
   actions: read
