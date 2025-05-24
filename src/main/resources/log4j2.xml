@@ -1,0 +1,28 @@
+<Configuration status="WARN">
+    <Properties>
+        <Property name="logFilename">${sys:logFilename:-logs/app.log}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <Filters>
+                <Filter type="MarkerFilter" onMatch="DENY" onMismatch="NEUTRAL" marker="FILE"/>
+            </Filters>
+            <PatternLayout pattern="%d [%t] %-5level: %msg%n"/>
+        </Console>
+
+        <File name="File" fileName="${logFilename}" append="true">
+            <Filters>
+                <Filter type="MarkerFilter" onMatch="DENY" onMismatch="NEUTRAL" marker="CONSOLE"/>
+            </Filters>
+            <PatternLayout pattern="%d [%t] %-5level: %msg%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Root>
+    </Loggers>
+</Configuration>
