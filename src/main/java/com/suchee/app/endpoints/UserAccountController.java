@@ -6,6 +6,8 @@ import com.suchee.app.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/userAccount")
 public class UserAccountController {
@@ -20,6 +22,12 @@ public class UserAccountController {
     public ResponseEntity<UserDTO> getUserAccountById(@PathVariable Long id){
         UserDTO userDTO = this.userService.getUserById(id);
         return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<UserDTO> users = this.userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping
