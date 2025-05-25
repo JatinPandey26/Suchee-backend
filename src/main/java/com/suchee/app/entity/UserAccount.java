@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,9 +38,12 @@ public class UserAccount extends VersionedEntity {
     @Column(nullable = false)
     private LocalDate dob;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id",referencedColumnName = "id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_account_x_role",
+                joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
+                inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}
+                )
+    private List<Role> roles;
 
     @Override
     public Long getId() {

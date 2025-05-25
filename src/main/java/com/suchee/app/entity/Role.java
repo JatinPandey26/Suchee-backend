@@ -4,6 +4,7 @@ import com.suchee.app.core.entities.NonVersioned;
 import com.suchee.app.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ public class Role extends NonVersioned {
     @Id
     private Long id;
 
-    @Column
-    @OneToMany(mappedBy = "role")
+
+    @ManyToMany(mappedBy = "roles")
     private List<UserAccount> users;
 
     @Column(nullable = false)

@@ -29,7 +29,4 @@ public class UserCreateDTO {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    @NotNull(message = "role should not be null")
-    @Valid
-    private RoleDTO roleDto;
 }

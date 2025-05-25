@@ -16,7 +16,7 @@ public class Password implements BaseEntity, Validatable, TypeWrapper<String>{
         if(PasswordEncoderHolder.isEncoded(password)){
             this.hashedPassword=password;
         }
-        this.hashedPassword= PasswordEncoderHolder.passwordEncoder.encode(password);
+        else this.hashedPassword= PasswordEncoderHolder.passwordEncoder.encode(password);
     }
 
     @Override

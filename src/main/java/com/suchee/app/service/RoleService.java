@@ -17,4 +17,5 @@ public interface RoleService {
     boolean existsById(Long id);
 
     Role save(Role role);
+
 }

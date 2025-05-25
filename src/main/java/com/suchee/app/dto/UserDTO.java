@@ -2,6 +2,7 @@ package com.suchee.app.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Setter;
@@ -28,5 +29,5 @@ public class UserDTO {
 
     @NotNull(message = "Role is required")
     @Valid
-    private RoleDTO role;
+    private List<RoleDTO> roles;
 }

@@ -5,6 +5,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/*
+* PasswordEncoderHolder will be used to hold encoder which will be used in classes were auto injection
+* cant be used like PasswordConverter
+* */
+
 @Component
 public class PasswordEncoderHolder {
 
