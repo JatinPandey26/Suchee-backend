@@ -32,7 +32,7 @@ public class UserAccountController {
     }
 
     @PostMapping("/create")
-    public  ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserCreateDTO userCreateDTO){
+    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserCreateDTO userCreateDTO){
         UserDTO savedUser = this.userService.createUser(userCreateDTO);
         return ResponseEntity.ok(savedUser);
     }

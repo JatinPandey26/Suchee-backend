@@ -37,7 +37,7 @@ public class UserAccount extends VersionedEntity {
     @Column(nullable = false)
     private LocalDate dob;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role_id",referencedColumnName = "id")
     private Role role;
 

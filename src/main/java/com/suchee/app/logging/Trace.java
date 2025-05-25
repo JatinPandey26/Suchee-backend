@@ -27,6 +27,8 @@ public class Trace {
     public static boolean taskCreation;
     public static boolean validationErrors;
     public static boolean role;
+    public static boolean security;
+    public static boolean auth;
 
     @PostConstruct
     public void initFlags() {
