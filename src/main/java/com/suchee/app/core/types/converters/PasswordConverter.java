@@ -4,7 +4,7 @@ import com.suchee.app.core.types.Password;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-@Converter(autoApply = true)
+@Converter
 public class PasswordConverter implements AttributeConverter<Password,String> {
 
     /**
