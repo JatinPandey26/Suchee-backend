@@ -32,7 +32,7 @@ public class AuthenticationController {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(authenticationResponse);
         }
-        // TODO: handle exception thrown when UserNotFounc
+
         return ResponseEntity.status(HttpStatus.OK).body(authenticationResponse);
     }
 

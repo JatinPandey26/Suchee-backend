@@ -1,5 +1,6 @@
 package com.suchee.app.security;
 
+import com.suchee.app.entity.Role;
 import com.suchee.app.entity.UserAccount;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,9 @@ public class UserAccountDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(userAccount.getRole().getRole().getDisplayName()));
+        List<Role> roles = userAccount.getRoles();
+        List<SimpleGrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole().getDisplayName())).toList();
+        return authorities;
     }
 
     @Override

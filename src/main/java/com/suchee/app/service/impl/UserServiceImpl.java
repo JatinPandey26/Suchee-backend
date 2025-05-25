@@ -1,11 +1,11 @@
 package com.suchee.app.service.impl;
 
-import com.suchee.app.core.types.Password;
 import com.suchee.app.dto.PasswordChangeDTO;
 import com.suchee.app.dto.UserCreateDTO;
 import com.suchee.app.dto.UserDTO;
 import com.suchee.app.entity.Role;
 import com.suchee.app.entity.UserAccount;
+import com.suchee.app.enums.RoleType;
 import com.suchee.app.exception.ResourceNotFoundException;
 import com.suchee.app.logging.Trace;
 import com.suchee.app.mapper.UserAccountMapper;
@@ -49,16 +49,17 @@ public class UserServiceImpl implements UserService {
 
         // check for role
 
-        Role role = this.roleService.findByRoleType(userCreateDTO.getRoleDto().getRole());
+        Role role = this.roleService.findByRoleType(RoleType.USER);
 
         if(role == null){
-            throw new ResourceNotFoundException(Role.getEntityName(),"RoleType",userCreateDTO.getRoleDto().getRole());
+            throw new ResourceNotFoundException(Role.getEntityName(),"RoleType",RoleType.USER.getDisplayName());
         }
 
         if(Trace.userCreation){
             Trace.log("User appended with role : " + role.getRole().getDisplayName());
         }
-        userAccount.setRole(role);
+
+        userAccount.setRoles(List.of(role));
 
         UserAccount savedAccount = this.userAccountRepository.save(userAccount);
 
