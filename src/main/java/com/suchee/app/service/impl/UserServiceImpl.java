@@ -1,14 +1,18 @@
 package com.suchee.app.service.impl;
 
+import com.suchee.app.core.types.Password;
 import com.suchee.app.dto.PasswordChangeDTO;
 import com.suchee.app.dto.UserCreateDTO;
 import com.suchee.app.dto.UserDTO;
+import com.suchee.app.entity.Role;
 import com.suchee.app.entity.UserAccount;
 import com.suchee.app.exception.ResourceNotFoundException;
 import com.suchee.app.logging.Trace;
 import com.suchee.app.mapper.UserAccountMapper;
 import com.suchee.app.repository.UserAccountRepository;
+import com.suchee.app.service.RoleService;
 import com.suchee.app.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +27,16 @@ public class UserServiceImpl implements UserService {
     // User Repository
     private UserAccountRepository userAccountRepository;
 
-    UserServiceImpl(UserAccountRepository userAccountRepository, UserAccountMapper userAccountMapper){
+    private RoleService roleService;
+
+    UserServiceImpl(UserAccountRepository userAccountRepository, UserAccountMapper userAccountMapper , RoleService roleService){
         this.userAccountRepository=userAccountRepository;
         this.userAccountMapper=userAccountMapper;
+        this.roleService=roleService;
     }
 
     @Override
+    @Transactional
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
 
         if(Trace.userCreation){
@@ -38,6 +46,19 @@ public class UserServiceImpl implements UserService {
         UserAccount userAccount = new UserAccount();
 
         this.userAccountMapper.mapUserCreateDTOtoUserAccount(userCreateDTO,userAccount);
+
+        // check for role
+
+        Role role = this.roleService.findByRoleType(userCreateDTO.getRoleDto().getRole());
+
+        if(role == null){
+            throw new ResourceNotFoundException(Role.getEntityName(),"RoleType",userCreateDTO.getRoleDto().getRole());
+        }
+
+        if(Trace.userCreation){
+            Trace.log("User appended with role : " + role.getRole().getDisplayName());
+        }
+        userAccount.setRole(role);
 
         UserAccount savedAccount = this.userAccountRepository.save(userAccount);
 

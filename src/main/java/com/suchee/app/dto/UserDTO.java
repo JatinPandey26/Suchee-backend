@@ -4,8 +4,10 @@ import lombok.Data;
 import java.time.LocalDate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import lombok.Setter;
 
 @Data
+@Setter
 public class UserDTO {
 
     @NotBlank(message = "First name is required")

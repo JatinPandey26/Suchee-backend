@@ -3,6 +3,7 @@ package com.suchee.app.endpoints;
 import com.suchee.app.dto.UserCreateDTO;
 import com.suchee.app.dto.UserDTO;
 import com.suchee.app.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class UserAccountController {
     }
 
     @PostMapping("/create")
-    public  ResponseEntity<UserDTO> createUser(@RequestBody UserCreateDTO userCreateDTO){
+    public  ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserCreateDTO userCreateDTO){
         UserDTO savedUser = this.userService.createUser(userCreateDTO);
         return ResponseEntity.ok(savedUser);
     }

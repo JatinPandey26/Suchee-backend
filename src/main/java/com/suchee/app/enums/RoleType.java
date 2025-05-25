@@ -1,5 +1,8 @@
 package com.suchee.app.enums;
 
+import lombok.Data;
+
+
 public enum RoleType {
     ADMIN("Administrator"),
     MANAGER("Manager"),

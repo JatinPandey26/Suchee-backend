@@ -17,12 +17,12 @@ public class Password implements BaseEntity, Validatable, TypeWrapper<String>{
     }
 
     @Override
-    public String getValue() {
-        return "";
+    public CoreValidator getValidator() {
+        return new PasswordValidator();
     }
 
     @Override
-    public CoreValidator getValidator() {
-        return new PasswordValidator();
+    public String getValue() {
+        return this.hashedPassword;
     }
 }

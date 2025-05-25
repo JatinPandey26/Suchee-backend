@@ -1,5 +1,6 @@
 package com.suchee.app.dto;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -27,4 +28,8 @@ public class UserCreateDTO {
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
+    @NotNull(message = "role should not be null")
+    @Valid
+    private RoleDTO roleDto;
 }

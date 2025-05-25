@@ -13,9 +13,5 @@ import java.io.Serializable;
  */
 public interface BaseEntity extends Serializable, Cloneable {
 
-    static String getEntityName(){
-        throw new RuntimeException("Entity name not specified in respective entity.");
-    }
-
 }
 
