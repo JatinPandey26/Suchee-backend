@@ -1,19 +1,24 @@
 package com.suchee.app.core.entities;
 
+import com.suchee.app.logging.Trace;
 import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Transient;
 
 /**
  * Abstract base class that adds persistence-related properties and behavior
  * to entities. It extends {@link AbstractTimeStamped} to include timestamp fields,
  * and implements {@link Persistable} interface for persistence lifecycle.
  */
+@MappedSuperclass
 public abstract class AbstractPersistable extends AbstractTimeStamped implements Persistable {
 
     /**
      * Flag indicating whether the entity is new (not yet persisted).
      * This is used by persistence frameworks to determine if an insert or update is needed.
      */
+    @Transient
     private boolean isNew = true;
 
     /**
@@ -68,6 +73,10 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
         this.lastUser=null;
     }
 
+     public static String getEntityName(){
+         Trace.log("Entity Name not configured , Shadow this method in entity to configure entity name");
+        throw new RuntimeException("Entity Name not configured in respective entity");
+     }
 
 }
 

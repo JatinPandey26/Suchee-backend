@@ -3,36 +3,45 @@ package com.suchee.app.logging;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
-@ConfigurationProperties(prefix = "suchee.app.logging")
+@ConfigurationProperties(prefix = "logging")
 public class Trace {
 
     private static Logger logger = LoggerFactory.getLogger(Trace.class);
+
+    @Value("${logging.logflags}")
+    private String logFlags;
 
     private static Set<String> enabledFlags = new HashSet<>();
 
     public static boolean userCreation;
     public static boolean taskCreation;
     public static boolean validationErrors;
+    public static boolean role;
 
     @PostConstruct
-    public static void initFlags() {
+    public void initFlags() {
 
         try{
+            String[] flags = logFlags.split(",");
+            enabledFlags = new HashSet<>(Arrays.stream(flags).toList());
+
             Class<?> traceClass = Trace.class;
 
             // to enable all logging we can pass "all" flag.
             if(enabledFlags.contains("all")){
                 Field[] fields = traceClass.getDeclaredFields();
                 for(Field field : fields){
-                    if(field.getType() == Boolean.class){
+                    if(field.getType() == boolean.class){
                         field.setBoolean(null,true);
                     }
                 }

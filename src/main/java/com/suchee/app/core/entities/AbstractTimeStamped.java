@@ -1,18 +1,31 @@
 package com.suchee.app.core.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.LocalDateTime;
 
 /**
- * Abstract base class that provides timestamp auditing fields to entities.
- * Implements the {@link TimeStamped} interface to provide
- * standard getter and setter methods for creation and update timestamps.
+ * Abstract base class that provides automatic auditing of creation and update timestamps
+ * for entities. It uses JPA auditing features to automatically populate the timestamp
+ * fields when an entity is persisted or updated.
  *
- * This class can be extended by entities that require tracking
- * of when they were created and last modified.
+ * <p>This class should be extended by entity classes that need to track when
+ * they were created and last modified.</p>
+ *
+ * <p>It implements the {@link TimeStamped} interface, which defines standard
+ * getter and setter methods for timestamp fields such as {@code createdAt} and {@code updatedAt}.</p>
+ *
+ * <p>Annotated with {@link MappedSuperclass} to allow its fields to be inherited by subclasses,
+ * and with {@link EntityListeners} to enable auditing via {@link AuditingEntityListener}.</p>
+ *
+ * @see TimeStamped
+ * @see AuditingEntityListener
  */
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractTimeStamped implements TimeStamped {
 
     /**
@@ -20,6 +33,7 @@ public abstract class AbstractTimeStamped implements TimeStamped {
      * Typically set once when the entity is first persisted.
      */
     @Column
+    @CreatedDate
     private LocalDateTime createdAt;
 
     /**
@@ -27,6 +41,7 @@ public abstract class AbstractTimeStamped implements TimeStamped {
      * Updated each time the entity is modified and persisted.
      */
     @Column
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     /**
@@ -69,20 +84,6 @@ public abstract class AbstractTimeStamped implements TimeStamped {
     @Override
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
-        if (createdAt == null) {
-            createdAt = now;
-        }
-        updatedAt = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
     }
 
 }

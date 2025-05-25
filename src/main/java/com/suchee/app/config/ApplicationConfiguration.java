@@ -1,7 +1,10 @@
 package com.suchee.app.config;
 
+import com.suchee.app.logging.Trace;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,5 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "com.suchee.app.repository")
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.suchee.app.entity")
+//@EnableConfigurationProperties(Trace.class)
+@EnableJpaAuditing
 public class ApplicationConfiguration {
 }
