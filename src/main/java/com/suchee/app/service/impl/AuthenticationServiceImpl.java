@@ -66,7 +66,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             authenticationSuccessResponse.setSuccess(Boolean.TRUE);
             authenticationSuccessResponse.setTimestamp(LocalDateTime.now());
 
-            // BaseAuth
             String authToken = authenticationTokenGenerator.generateToken(userAccountDetails,passwordHave);
             authenticationSuccessResponse.setAuthToken(authToken);
             authenticationSuccessResponse.setAuthTokenType(authenticationTokenGenerator.getAuthTokenType());

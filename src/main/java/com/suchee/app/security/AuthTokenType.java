@@ -10,7 +10,7 @@ public enum AuthTokenType {
         this.type=type;
     }
 
-    String getType(){
+    public String getType(){
         return this.type;
     }
 }

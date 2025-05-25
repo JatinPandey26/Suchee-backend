@@ -1,5 +1,6 @@
 package com.suchee.app.service.impl;
 
+import com.suchee.app.core.types.Email;
 import com.suchee.app.dto.PasswordChangeDTO;
 import com.suchee.app.dto.UserCreateDTO;
 import com.suchee.app.dto.UserDTO;
@@ -115,6 +116,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailAvailable(String email) {
-        return false;
+        Optional<UserAccount> optionalUserAccountWithThisEmail = this.userAccountRepository.findByEmail(new Email(email));
+
+        return optionalUserAccountWithThisEmail.isEmpty();
     }
 }

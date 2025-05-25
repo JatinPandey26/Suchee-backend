@@ -1,5 +1,10 @@
 package com.suchee.app.config;
 
+import com.suchee.app.security.AuthenticationTokenGenerator;
+import com.suchee.app.security.BasicAuthenticationTokenGenerator;
+import com.suchee.app.security.JwtAuthenticationFilter;
+import com.suchee.app.security.JwtService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,10 +12,33 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+
+    @Value("${auth.token.generator-type:basic}")
+    private String generatorType;
+
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    SecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter){
+        this.jwtAuthenticationFilter=jwtAuthenticationFilter;
+    }
+
+    /**
+     * Configures the application's HTTP security settings.
+     *
+     * <p>This method sets up the security filter chain using Spring Security.
+     * It applies authentication and authorization rules based on the configured
+     * {@code generatorType}, which can be either {@code "jwt"} or {@code "basic"}.</p>
+     *
+     * @param http the {@link HttpSecurity} object used to configure HTTP security
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if an error occurs during configuration
+     */
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -20,11 +48,35 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
-                )
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
+                );
+
+        if(generatorType.equals("jwt"))
+        {
+            http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        }
+        if(generatorType.equals("basic")){
+            http.httpBasic(Customizer.withDefaults());
+        }
 
         return http.build();
+    }
+
+/**
+ * Provides the appropriate {@link AuthenticationTokenGenerator} bean based on the configuration.
+ *
+ * @return a concrete implementation of {@link AuthenticationTokenGenerator}
+ * @throws IllegalArgumentException if an invalid generator type is provided
+ */
+    @Bean
+    public AuthenticationTokenGenerator authenticationTokenGenerator() {
+        switch (generatorType.toLowerCase()) {
+            case "jwt":
+                return new JwtService();
+            case "basic":
+                return new BasicAuthenticationTokenGenerator();
+            default:
+                throw new IllegalArgumentException("Invalid token generator type: " + generatorType);
+        }
     }
 
 }
