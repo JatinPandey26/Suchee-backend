@@ -31,6 +31,12 @@ public class UserAccountDetailService implements UserDetailsService {
         }
         // load user from db
 
+        UserAccount userAccount = this.loadUserAccountWithEmail(email);
+
+        return new UserAccountDetails(userAccount);
+    }
+
+    public UserAccount loadUserAccountWithEmail(String email){
         Optional<UserAccount> userAccount = this.userAccountRepository.findByEmail(new Email(email));
 
         if(userAccount.isEmpty()){
@@ -38,6 +44,6 @@ public class UserAccountDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("User with email : " + email + " not  found ");
         }
 
-        return new UserAccountDetails(userAccount.get());
+        return userAccount.get();
     }
 }

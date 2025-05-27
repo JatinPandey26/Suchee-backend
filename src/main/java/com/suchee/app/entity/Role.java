@@ -1,11 +1,10 @@
 package com.suchee.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.suchee.app.core.entities.NonVersioned;
 import com.suchee.app.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-
 import java.util.List;
 
 @Entity
@@ -17,6 +16,7 @@ public class Role extends NonVersioned {
 
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<UserAccount> users;
 
     @Column(nullable = false)

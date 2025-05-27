@@ -34,4 +34,9 @@ public class UserAccountDetails implements UserDetails {
     public String getUsername() {
         return userAccount.getEmail().getValue();
     }
+
+    public UserAccount getUserAccount(){
+        return this.userAccount;
+    }
+
 }

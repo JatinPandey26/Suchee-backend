@@ -9,7 +9,9 @@ import lombok.Setter;
 
 @Data
 @Setter
-public class UserDTO {
+public class UserDTO extends AbstractPersistableDTO {
+
+    private Long id;
 
     @NotBlank(message = "First name is required")
     @Size(max = 50, message = "First name must be at most 50 characters")

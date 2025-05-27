@@ -1,5 +1,7 @@
 package com.suchee.app.core.entities;
 
+import com.suchee.app.entity.UserAccount;
+
 /**
  * Interface representing an entity that can be persisted.
  *
@@ -35,5 +37,5 @@ public interface Persistable extends BaseEntity, TimeStamped {
      *
      * @return the ID of the last modifying user
      */
-    Long getLastUser();
+    UserAccount getLastUser();
 }
