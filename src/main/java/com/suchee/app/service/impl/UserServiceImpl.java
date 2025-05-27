@@ -120,4 +120,16 @@ public class UserServiceImpl implements UserService {
 
         return optionalUserAccountWithThisEmail.isEmpty();
     }
+
+    @Override
+    public UserDTO getUserByEmail(String email) {
+
+        Optional<UserAccount> optionalUserAccountWithThisEmail = this.userAccountRepository.findByEmail(new Email(email));
+
+        if(optionalUserAccountWithThisEmail.isEmpty()){
+            throw new ResourceNotFoundException(UserAccount.getEntityName(),"email",email);
+        }
+
+        return this.userAccountMapper.toDto(optionalUserAccountWithThisEmail.get());
+    }
 }

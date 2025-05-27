@@ -30,5 +30,7 @@ public interface UserService {
 
     boolean isEmailAvailable(String email);
 
+    UserDTO getUserByEmail(String email);
+
 }
 

@@ -29,6 +29,9 @@ public class Trace {
     public static boolean role;
     public static boolean security;
     public static boolean auth;
+    public static boolean team;
+    public static boolean attachment;
+
 
     @PostConstruct
     public void initFlags() {
@@ -62,6 +65,22 @@ public class Trace {
             throw new RuntimeException(exception.getMessage());
         }
 
+    }
+
+    public static void debug(Object... contents) {
+        log(LogLevel.DEBUG, contents);
+    }
+
+    public static void info(Object... contents) {
+        log(LogLevel.INFO, contents);
+    }
+
+    public static void warn(Object... contents) {
+        log(LogLevel.WARN, contents);
+    }
+
+    public static void error(Object... contents) {
+        log(LogLevel.ERROR, contents);
     }
 
     public static void log(Object... contents) {

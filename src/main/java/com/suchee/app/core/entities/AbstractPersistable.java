@@ -1,10 +1,11 @@
 package com.suchee.app.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.suchee.app.entity.UserAccount;
 import com.suchee.app.logging.Trace;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Transient;
+import com.suchee.app.security.SecurityContext;
+import jakarta.persistence.*;
+
 
 /**
  * Abstract base class that adds persistence-related properties and behavior
@@ -25,8 +26,10 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
      * Stores the identifier of the user who last modified this entity.
      * Can be used for audit or tracking purposes.
      */
-    @Column
-    private Long lastUser;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_user_id")
+    @JsonIgnore
+    private UserAccount lastUser;
 
     /**
      * Checks if this entity is new (not persisted yet).
@@ -54,7 +57,7 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
      * @return ID of last user who modified the entity
      */
     @Override
-    public Long getLastUser() {
+    public UserAccount getLastUser() {
         return lastUser;
     }
 
@@ -63,14 +66,13 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
      *
      * @param lastUser ID of the last modifying user
      */
-    public void setLastUser(Long lastUser) {
+    public void setLastUser(UserAccount lastUser) {
         this.lastUser = lastUser;
     }
 
     @PrePersist
     public void setLastUserAsCurrentUser(){
-        // TODO: fetch currentUser from security context and set
-        this.lastUser=null;
+        this.lastUser = SecurityContext.getCurrentUserAccount().orElse(null);
     }
 
      public static String getEntityName(){

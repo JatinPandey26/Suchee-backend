@@ -41,6 +41,10 @@ jobs:
         run: mvn clean install -DskipTests -Dspring.profiles.active=test
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
