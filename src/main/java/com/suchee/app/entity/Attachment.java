@@ -1,6 +1,7 @@
 package com.suchee.app.entity;
 
 import com.suchee.app.core.entities.NonVersioned;
+import com.suchee.app.enums.AttachmentUploadStatus;
 import com.suchee.app.enums.FileType;
 import com.suchee.app.enums.StorageProvider;
 import jakarta.persistence.*;
@@ -24,6 +25,9 @@ public class Attachment extends NonVersioned {
     private String previewUrl;
 
     @Column
+    private String preUploadUrl;
+
+    @Column
     private UserAccount uploadedBy;
 
     @Column
@@ -40,8 +44,17 @@ public class Attachment extends NonVersioned {
     @Column
     private String path;
 
+    @Column(name = "att_upld_status")
+    @Enumerated(value = EnumType.STRING)
+    // default set to pending when new Attachment created
+    private AttachmentUploadStatus attachmentUploadStatus = AttachmentUploadStatus.PENDING;
+
     @Override
     public Long getId() {
-        return 0L;
+        return this.id;
+    }
+
+    public static String getEntityName(){
+       return "Attachment";
     }
 }

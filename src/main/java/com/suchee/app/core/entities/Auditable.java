@@ -1,8 +1,6 @@
 package com.suchee.app.core.entities;
 
-import com.suchee.app.listeners.AuditEntityListener;
-import jakarta.persistence.EntityListeners;
-
+import com.suchee.app.messaging.listeners.AuditEntityListener;
 import jakarta.persistence.EntityListeners;
 
 /**
