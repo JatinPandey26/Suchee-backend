@@ -1,5 +1,6 @@
 package com.suchee.app.service.impl;
 
+import com.suchee.app.dto.AttachmentStorageInfoDto;
 import com.suchee.app.dto.TeamCreationDTO;
 import com.suchee.app.dto.TeamDTO;
 import com.suchee.app.dto.UserDTO;
@@ -12,7 +13,7 @@ import com.suchee.app.mapper.TeamMapper;
 import com.suchee.app.repository.TeamRepository;
 import com.suchee.app.service.AttachmentService;
 import com.suchee.app.service.TeamService;
-import com.suchee.app.utils.StoragePathBuilder;
+import com.suchee.app.utils.StorageInfoBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,8 @@ public class TeamServiceImpl implements TeamService {
         // process Avatar
 
         if (teamCreationDTO.getAvatar() != null && !teamCreationDTO.getAvatar().isEmpty()) {
-            String attachmentPath = StoragePathBuilder.teamAvatarPath(String.valueOf(savedTeam.getId()));
-            Attachment avatar = this.attachmentService.process(teamCreationDTO.getAvatar(), attachmentPath);
+            AttachmentStorageInfoDto attachmentStorageInfo = StorageInfoBuilder.teamAttachmentPath(String.valueOf(savedTeam.getId()),teamCreationDTO.getAvatar().getOriginalFilename());
+            Attachment avatar = this.attachmentService.process(teamCreationDTO.getAvatar(), attachmentStorageInfo);
 
             savedTeam.setAvatar(avatar);
             savedTeam = this.teamRepository.save(savedTeam);
