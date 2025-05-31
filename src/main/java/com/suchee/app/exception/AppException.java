@@ -5,7 +5,9 @@ public class AppException extends RuntimeException{
 
     public enum ERROR_CODE {
         RESOURCE_NOT_FOUND("RESOURCE_NOT_FOUND"),
-        VALIDATION_ERROR("VALIDATION_ERROR");
+        VALIDATION_ERROR("VALIDATION_ERROR"),
+        RESOURCE_ALREADY_EXISTS("RESOURCE_ALREADY_EXISTS")
+        ;
 
         private final String code;
 

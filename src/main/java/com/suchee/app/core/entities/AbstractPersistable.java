@@ -72,7 +72,8 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
 
     @PrePersist
     public void setLastUserAsCurrentUser(){
-        this.lastUser = SecurityContext.getCurrentUserAccount().orElse(null);
+        UserAccount userAccount = SecurityContext.getCurrentUserAccount();
+        this.lastUser = userAccount;
     }
 
      public static String getEntityName(){

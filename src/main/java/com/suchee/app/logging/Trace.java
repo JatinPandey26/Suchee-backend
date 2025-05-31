@@ -31,6 +31,10 @@ public class Trace {
     public static boolean auth;
     public static boolean team;
     public static boolean attachment;
+    public static boolean member;
+    public static boolean notification;
+    public static boolean asyncEvent;
+
 
 
     @PostConstruct

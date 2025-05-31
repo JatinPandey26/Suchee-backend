@@ -2,6 +2,7 @@ package com.suchee.app.security;
 
 import com.suchee.app.entity.UserAccount;
 import jakarta.annotation.PostConstruct;
+import org.apache.catalina.User;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -59,7 +60,7 @@ public class SecurityContext extends SecurityContextHolder {
      *
      * @return an {@link Optional} containing the authenticated {@link UserAccount}, or empty if no authenticated user is present
      */
-    public static Optional<UserAccount> getCurrentUserAccount() {
+    public static UserAccount getCurrentUserAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth != null &&
@@ -69,10 +70,11 @@ public class SecurityContext extends SecurityContextHolder {
             Object principal = auth.getPrincipal();
 
             if (principal instanceof UserAccountDetails userDetails) {
-                return Optional.ofNullable(userDetails.getUserAccount());
+                return userDetails.getUserAccount();
             }
         }
-        return Optional.empty();
+        return null;
     }
+
 
 }

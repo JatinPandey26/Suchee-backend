@@ -2,7 +2,9 @@ package com.suchee.app.enums;
 
 public enum EventMessageType {
 
-    ATTACHMENT_CREATE("ATTACHMENT_CREATED");
+    ATTACHMENT_CREATE("ATTACHMENT_CREATED"),
+    MEMBER_INVITE_CREATED("MEMBER_INVITE_CREATED"),
+    USER_CREATED("USER_CREATED");
 
     private final String eventType;
 
@@ -10,7 +12,7 @@ public enum EventMessageType {
         this.eventType = eventType;
     }
 
-    public String getEventType() {
+    public String getEventMessageType() {
         return eventType;
     }
 

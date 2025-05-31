@@ -3,13 +3,15 @@ package com.suchee.app.messaging.async.impl;
 import com.suchee.app.dto.AttachmentDTO;
 import com.suchee.app.dto.AttachmentUploadRequestDto;
 import com.suchee.app.enums.EventMessageType;
+import com.suchee.app.messaging.async.AsyncEventPublishType;
 import com.suchee.app.messaging.async.AsyncMessage;
-import lombok.Data;
+import lombok.Getter;
+
 
 import java.time.LocalDateTime;
 
-@Data
-public class AttachmentCreatedEventMessage implements AsyncMessage<EventMessageType> {
+@Getter
+public class AttachmentCreatedEventMessage extends AsyncMessage<EventMessageType> {
 
     private final String eventId;
     private final LocalDateTime timestamp = LocalDateTime.now();
@@ -17,6 +19,7 @@ public class AttachmentCreatedEventMessage implements AsyncMessage<EventMessageT
     private final AttachmentUploadRequestDto attachmentUploadRequestDto;
 
     public AttachmentCreatedEventMessage(String eventId, String source, AttachmentUploadRequestDto attachmentDto) {
+        super(AsyncEventPublishType.SPRING_EVENT, null);
         this.eventId = eventId;
         this.source = source;
         this.attachmentUploadRequestDto = attachmentDto;
