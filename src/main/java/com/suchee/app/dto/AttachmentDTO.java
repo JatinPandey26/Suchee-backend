@@ -2,9 +2,13 @@ package com.suchee.app.dto;
 
 import com.suchee.app.enums.FileType;
 import com.suchee.app.enums.StorageProvider;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AttachmentDTO {
     private Long id;
     private String name;

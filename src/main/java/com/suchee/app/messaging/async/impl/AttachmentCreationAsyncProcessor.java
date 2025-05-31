@@ -40,6 +40,6 @@ public class AttachmentCreationAsyncProcessor implements AsyncProcessor<Attachme
 
     @Override
     public String getType() {
-        return EventMessageType.ATTACHMENT_CREATE.getEventType();
+        return EventMessageType.ATTACHMENT_CREATE.getEventMessageType();
     }
 }

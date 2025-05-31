@@ -1,0 +1,97 @@
+spring:
+  application:
+    name: suchee
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/sucheeDB
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+  kafka:  # Preserving your existing Kafka block (if needed, adjust here)
+    bootstrap-servers: ${KAFKA_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: notification-consumer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.suchee.app.*
+    backoff:
+      interval: 5
+      max-retries: 0
+
+    properties:
+#      security:
+#        protocol: SASL_SSL
+#      sasl:
+#        mechanism: PLAIN
+#        jaas:
+#          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USERNAME}' password='${KAFKA_PASSWORD}';
+      session:
+        timeout:
+          ms: 45000
+
+
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        kafka:
+          core:
+            KafkaTemplate: DEBUG
+        security: DEBUG
+  log-flags: all
+  enabled-flags1: all
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET}
+    expiration-time: 360000000 # 1h in milliseconds
+
+auth:
+  token:
+    generator-type: jwt
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+
+suchee:
+  base:
+    url: https://localhost:8080

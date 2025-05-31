@@ -28,6 +28,10 @@ public interface TeamService {
 
     Page<TeamDTO> getTeams(Pageable pageable);
 
+    Page<TeamDTO> getMyTeams(String searchKeyWord , Pageable pageable);
+
+    Page<TeamDTO> getMyTeams(Pageable pageable);
+
     List<UserDTO> getTeamMembers(long teamId);
 
     boolean removeMemberFromTeam(long teamId, long userId);
@@ -35,7 +39,7 @@ public interface TeamService {
 
     // below addMember apis will work with Invitation mechanism
 
-    boolean addMemberToTeam(long teamId, long userId);
+    String addMemberToTeam(long teamId, String email);
 
     boolean addMemberToTeam(long teamId, long userId,RoleType roleType);
 

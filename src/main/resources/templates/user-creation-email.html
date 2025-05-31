@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; background-color: #f8f9fa; padding: 20px; }
+        .container { background-color: #fff; padding: 30px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn { display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px; margin-top: 20px; }
+        .footer { font-size: 12px; color: #777; margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 th:text="'Welcome to ' + ${companyName} + ', ' + ${user.firstName} + '!'">Welcome to [Your Company Name], John!</h2>
+
+    <p>We're excited to have you on board. Your account has been successfully created.</p>
+
+    <p><strong>Username:</strong> <span th:text="${user.email}">user@example.com</span></p>
+
+    <p>To get started, please log in and change your password.</p>
+    <a th:href="${loginLink}" class="btn">Log In</a>
+
+    <p>If you have any questions or need help, feel free to contact our support team.</p>
+
+    <div class="footer">
+        &copy; <span th:text="${year}">2025</span> <span th:text="${companyName}">[Your Company Name]</span> · All rights reserved.
+    </div>
+</div>
+</body>
+</html>

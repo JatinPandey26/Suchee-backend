@@ -1,9 +1,11 @@
 package com.suchee.app.endpoints;
 
+import com.suchee.app.dto.BasicMessageResponseDto;
 import com.suchee.app.dto.TeamCreationDTO;
 import com.suchee.app.dto.TeamDTO;
 import com.suchee.app.service.TeamService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,13 @@ public class TeamController {
         TeamDTO teamDTO = this.teamService.editTeam(newTeam);
 
         return ResponseEntity.ok(teamDTO);
+    }
+
+    @PostMapping("/{teamId}/addMember")
+    public ResponseEntity<BasicMessageResponseDto> addMember(@PathVariable long teamId , @Email @RequestParam String email){
+        String response = this.teamService.addMemberToTeam(teamId,email);
+
+        return ResponseEntity.ok(new BasicMessageResponseDto(response));
     }
 
 }

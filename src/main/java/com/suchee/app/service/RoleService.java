@@ -8,14 +8,12 @@ import java.util.List;
 
 public interface RoleService {
 
-    Role findById(Long id);
+    RoleDTO findById(Long id);
 
-    Role findByRoleType(RoleType roleType);
+    RoleDTO findByRoleType(RoleType roleType);
 
-    List<Role> getAllRoles();
+    List<RoleDTO> getAllRoles();
 
     boolean existsById(Long id);
-
-    Role save(Role role);
 
 }

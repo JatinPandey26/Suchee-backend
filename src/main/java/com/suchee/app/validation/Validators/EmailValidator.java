@@ -5,7 +5,7 @@ import com.suchee.app.validation.Errors.SimpleValidationError;
 
 public class EmailValidator extends AbstractCoreValidator<Email,String>{
 
-    private final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
     @Override
     protected void performValidation(Email email) {
@@ -14,8 +14,18 @@ public class EmailValidator extends AbstractCoreValidator<Email,String>{
             return;
         }
 
-        if (!email.getValue().matches(EMAIL_REGEX)) {
-            addError(new SimpleValidationError("Email format is invalid."));
+       try {
+           validate(email.getValue());
+       }
+       catch (Exception e){
+           addError(new SimpleValidationError(e.getMessage()));
+       }
+
+    }
+
+    public static void validate(String email){
+        if (!email.matches(EMAIL_REGEX)) {
+            throw new RuntimeException("Email format is invalid.");
         }
     }
 

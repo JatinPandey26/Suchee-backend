@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>You're Invited!</title>
+</head>
+<body>
+<h2>Hello !!!</h2>
+<p>You have been invited to join <strong th:text="${teamName}">Our Team</strong>.</p>
+<p>Click the link below to accept your invitation:</p>
+<a th:href="${invitationLink}">Accept Invitation</a>
+<br><br>
+<p>Thanks,<br/>The Suchee Team</p>
+</body>
+</html>

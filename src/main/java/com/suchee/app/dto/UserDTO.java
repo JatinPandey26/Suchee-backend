@@ -1,14 +1,18 @@
 package com.suchee.app.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO extends AbstractPersistableDTO {
 
     private Long id;
