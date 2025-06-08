@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 public interface MemberInvitationMapper {
 
     MemberInvitationDto toDto(MemberInvitation memberInvitation);
-
+    MemberInvitation toEntity(MemberInvitationDto memberInvitationDto);
 }

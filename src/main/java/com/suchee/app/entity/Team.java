@@ -13,16 +13,14 @@ public class Team extends VersionedEntity {
     private Long id;
 
     @Column(unique = true,nullable = false,length = 60)
-    private String teamName;
+    private String name;
 
     @Column
     private String description;
 
     // Invitations List TODO
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avatar_id")
-    private Attachment avatar;
+    @Column(length = 600)
+    private String avatar;
 
     @Override
     public Long getId() {

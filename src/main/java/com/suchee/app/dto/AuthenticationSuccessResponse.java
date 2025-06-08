@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 @Data
 public class AuthenticationSuccessResponse extends AuthenticationResponse{
 
-    private LocalDateTime timestamp;
     boolean isSuccess = true;
 
     // Basic,jwt etc
     String authToken;
     AuthTokenType authTokenType;
+    UserDTO user;
 
 }

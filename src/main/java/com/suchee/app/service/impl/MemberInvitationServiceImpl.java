@@ -31,6 +31,18 @@ public class MemberInvitationServiceImpl implements MemberInvitationService {
     private final TeamMapper teamMapper;
 
     @Override
+    public boolean createMemberInvitation(MemberInvitationDto memberInvitationDto) {
+        MemberInvitation memberInvitation = this.memberInvitationMapper.toEntity(memberInvitationDto);
+
+        MemberInvitation savedMemberInvite = this.memberInvitationRepository.save(memberInvitation);
+
+        MemberInvitationDto savedMemberInvitationDto = this.memberInvitationMapper.toDto(savedMemberInvite);
+        // create Message for queue
+        publishInvitationMessage(savedMemberInvitationDto);
+        return true;
+    }
+
+    @Override
     public boolean createMemberInvitation(TeamDTO teamDto, String email) {
 
         try{
@@ -46,8 +58,7 @@ public class MemberInvitationServiceImpl implements MemberInvitationService {
             MemberInvitationDto memberInvitationDto = this.memberInvitationMapper.toDto(savedMemberInvite);
             // create Message for queue
 
-            MemberInvitationCreatedEvent memberInvitationCreatedEvent = new MemberInvitationCreatedEvent(memberInvitationDto, AsyncEventPublishType.QUEUE_EVENT);
-            this.asyncEventPublisher.publish(memberInvitationCreatedEvent);
+            publishInvitationMessage(memberInvitationDto);
         }
         catch (Exception exception){
             exception.printStackTrace();
@@ -73,5 +84,10 @@ public class MemberInvitationServiceImpl implements MemberInvitationService {
 
         this.memberInvitationRepository.save(memberInvitation);
 
+    }
+
+    public void publishInvitationMessage(MemberInvitationDto memberInvitationDto){
+        MemberInvitationCreatedEvent memberInvitationCreatedEvent = new MemberInvitationCreatedEvent(memberInvitationDto, AsyncEventPublishType.QUEUE_EVENT);
+        this.asyncEventPublisher.publish(memberInvitationCreatedEvent);
     }
 }

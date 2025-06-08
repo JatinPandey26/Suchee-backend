@@ -1,9 +1,12 @@
 package com.suchee.app.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.suchee.app.dto.AttachmentSignedSignatureResponse;
 import com.suchee.app.dto.AttachmentStorageInfoDto;
 import com.suchee.app.dto.AttachmentUploadRequestDto;
+import com.suchee.app.logging.Trace;
 import com.suchee.app.service.FileStorageService;
+import com.suchee.app.utils.CloudinarySignatureUtil;
 import com.suchee.app.utils.LocalFileStorageService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +51,14 @@ public class CloudinaryServiceImpl implements FileStorageService {
     @Value("${cloudinary.defaults.folder:public}")
     String defaultFolder;
 
+    @Value("${cloudinary.api-secret}")
+    String secret;
+
     @Autowired
     private LocalFileStorageService localFileStorageService;
+
+    @Autowired
+    private CloudinarySignatureUtil cloudinarySignatureUtil;
 
     /**
      * Uploads a file to Cloudinary based on the provided {@link AttachmentUploadRequestDto}.
@@ -120,5 +129,20 @@ public class CloudinaryServiceImpl implements FileStorageService {
         return cloudinary.url()
                 .secure(true)
                 .generate(attachmentStorageInfo.getFolderPath() + "/" + attachmentStorageInfo.getPublicId());
+    }
+
+
+    public AttachmentSignedSignatureResponse generateSignedSignature(String path){
+
+        String timestamp = String.valueOf(System.currentTimeMillis() / 1000L);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("folder", path);
+        params.put("timestamp", timestamp);
+
+        String signature = cloudinarySignatureUtil.generateSignature(params,secret);
+        Trace.log("Cloudinary signed signature generated " , signature);
+
+        return new AttachmentSignedSignatureResponse(signature,timestamp,path);
     }
 }

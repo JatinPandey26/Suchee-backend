@@ -76,5 +76,11 @@ public class SecurityContext extends SecurityContextHolder {
         return null;
     }
 
+    public static Long getCurrentUserId(){
+        UserAccount account = getCurrentUserAccount();
+        assert account != null;
+        return account.getId();
+    }
+
 
 }

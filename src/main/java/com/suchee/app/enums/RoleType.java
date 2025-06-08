@@ -6,6 +6,7 @@ import lombok.Data;
 public enum RoleType {
     ADMIN("Administrator"),
     TEAM_ADMIN("Team Admin"),
+    TEAM_MEMBER("Team Member"),
     BOARD_ADMIN("Board Admin"),
     BOARD_MEMBER("Board Member"),
     VIEWER("Viewer"),

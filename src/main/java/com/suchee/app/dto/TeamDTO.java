@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class TeamDTO extends AbstractPersistableDTO {
 
     private Long id;
-    private String teamName;
+    private String name;
     private String description;
     private UserDTO createdBy;
-    private AttachmentDTO avatar;
+    private String avatar;
 
 }

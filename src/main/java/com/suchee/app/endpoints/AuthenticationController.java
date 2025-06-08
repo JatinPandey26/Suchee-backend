@@ -10,10 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 
@@ -72,18 +69,18 @@ public class AuthenticationController {
         if(authenticationResponse instanceof AuthenticationSuccessResponse successResponse) {
             ResponseCookie tokenCookie = ResponseCookie.from("auth_token", successResponse.getAuthToken())
                     .httpOnly(true)
-                    .secure(false)
+                    .secure(true)
                     .path("/")
-                    .maxAge(Duration.ofHours(1))
-                    .sameSite("Strict")
+                    .maxAge(Duration.ofHours(6))
+                    .sameSite("none")
                     .build();
 
             ResponseCookie typeCookie = ResponseCookie.from("auth_token_type", successResponse.getAuthTokenType().getType())
                     .httpOnly(true)
-                    .secure(false)
+                    .secure(true)
                     .path("/")
-                    .maxAge(Duration.ofHours(1))
-                    .sameSite("Strict")
+                    .maxAge(Duration.ofHours(6))
+                    .sameSite("none")
                     .build();
 
 

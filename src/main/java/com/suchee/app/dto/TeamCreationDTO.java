@@ -3,9 +3,12 @@ package com.suchee.app.dto;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 public class TeamCreationDTO {
-    private String teamName;
+    private String name;
     private String description;
-    private MultipartFile avatar;
+    private String avatar;
+    private List<MemberInvitationCreateDto> invitations;
 }

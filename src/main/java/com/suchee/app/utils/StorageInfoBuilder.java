@@ -1,6 +1,8 @@
 package com.suchee.app.utils;
 
 import com.suchee.app.dto.AttachmentStorageInfoDto;
+import com.suchee.app.enums.AttachmentType;
+import com.suchee.app.service.impl.CloudinaryServiceImpl;
 
 import java.util.UUID;
 
@@ -63,6 +65,19 @@ public class StorageInfoBuilder {
     public static String boardWallpaperPath(String teamId, String boardId) {
         return String.format("%s/%s/%s/%s/wallpaper.jpg", TEAMS_FOLDER, teamId, BOARDS_FOLDER, boardId);
     }
+
+    public static String UserAvatarPath(String email){
+        return String.format("%s/avatar.jpg", email);
+    }
+
+    public static String getFolderPathByAttachmentType(String type,String... pathVars){
+        if(type.equalsIgnoreCase(AttachmentType.USER_AVATAR.name())){
+            return UserAvatarPath(pathVars[0]);
+        }
+
+        return "/bin";
+    }
+
 }
 
 

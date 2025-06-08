@@ -38,6 +38,9 @@ public class UserAccount extends VersionedEntity {
     @Column(nullable = false)
     private LocalDate dob;
 
+    @Column(length = 600)
+    private String avatar;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_account_x_role",
                 joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},

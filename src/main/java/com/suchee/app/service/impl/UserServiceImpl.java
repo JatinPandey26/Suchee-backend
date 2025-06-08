@@ -16,6 +16,7 @@ import com.suchee.app.messaging.async.AsyncEventPublishType;
 import com.suchee.app.messaging.async.AsyncEventPublisher;
 import com.suchee.app.messaging.async.impl.UserCreationEvent;
 import com.suchee.app.repository.UserAccountRepository;
+import com.suchee.app.security.SecurityContext;
 import com.suchee.app.service.RoleService;
 import com.suchee.app.service.UserService;
 import jakarta.transaction.Transactional;
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
         userAccount.setRoles(List.of(this.roleMapper.toEntity(role)));
 
         UserAccount savedAccount = this.userAccountRepository.save(userAccount);
-
+        this.userAccountRepository.flush();
         if(Trace.userCreation){
             Trace.log("User created successfully with id " + savedAccount.getId());
         }
@@ -140,5 +141,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return this.userAccountMapper.toDto(optionalUserAccountWithThisEmail.get());
+    }
+
+    @Override
+    public UserDTO getMe() {
+
+        UserAccount userAccount = SecurityContext.getCurrentUserAccount();
+
+        return this.userAccountMapper.toDto(userAccount);
     }
 }

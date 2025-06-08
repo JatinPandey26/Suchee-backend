@@ -5,6 +5,7 @@ import com.suchee.app.dto.UserDTO;
 import com.suchee.app.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,13 @@ public class UserAccountController {
     public ResponseEntity<Boolean> checkIfEmailAvailable(@RequestParam @Email String email){
         boolean isAvailable = this.userService.isEmailAvailable(email);
         return ResponseEntity.ok(isAvailable);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getMe(){
+
+        UserDTO userDTO = this.userService.getMe();
+        return ResponseEntity.ok(userDTO);
     }
 
 }

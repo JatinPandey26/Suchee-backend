@@ -32,5 +32,6 @@ public interface UserService {
 
     UserDTO getUserByEmail(String email);
 
+    UserDTO getMe();
 }
 
