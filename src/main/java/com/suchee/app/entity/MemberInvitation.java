@@ -22,6 +22,10 @@ public class MemberInvitation extends NonVersioned {
     @Enumerated(EnumType.STRING)
     private MemberInvitationStatus status = MemberInvitationStatus.PENDING;
 
+    @OneToOne
+    @JoinColumn(name = "role")
+    private Role role; // only one role - TEAM_ADMIN or TEAM_MEMBER
+
     // all users invited will be onboarded as TEAM_MEMBER
 
     @Override

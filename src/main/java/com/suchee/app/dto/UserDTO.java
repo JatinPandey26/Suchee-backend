@@ -36,4 +36,6 @@ public class UserDTO extends AbstractPersistableDTO {
     @NotNull(message = "Role is required")
     @Valid
     private List<RoleDTO> roles;
+
+    private String avatar;
 }

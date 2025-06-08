@@ -13,4 +13,5 @@ public class MemberInvitationDto {
     private String email;
     private TeamDTO team;
     private MemberInvitationStatus status;
+    private RoleDTO role;
 }

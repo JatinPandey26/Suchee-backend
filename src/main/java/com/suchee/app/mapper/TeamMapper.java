@@ -9,7 +9,6 @@ import org.mapstruct.*;
 public interface TeamMapper {
 
 
-    @Mapping(target = "avatar", ignore = true)
     Team toEntity(TeamCreationDTO teamCreationDTO);
 
     TeamDTO toDto(Team team);

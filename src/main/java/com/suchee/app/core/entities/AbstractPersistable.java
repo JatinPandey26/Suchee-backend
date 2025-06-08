@@ -31,6 +31,11 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
     @JsonIgnore
     private UserAccount lastUser;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    @JsonIgnore
+    private UserAccount createdBy;
+
     /**
      * Checks if this entity is new (not persisted yet).
      * Used by the persistence mechanism to decide insert vs update.
@@ -70,11 +75,20 @@ public abstract class AbstractPersistable extends AbstractTimeStamped implements
         this.lastUser = lastUser;
     }
 
-    @PrePersist
+    @PreUpdate
     public void setLastUserAsCurrentUser(){
         UserAccount userAccount = SecurityContext.getCurrentUserAccount();
         this.lastUser = userAccount;
     }
+
+    @PrePersist
+    public  void setCreatedBy(){
+        UserAccount userAccount = SecurityContext.getCurrentUserAccount();
+        this.createdBy = userAccount;
+        this.lastUser=userAccount;
+    }
+
+
 
      public static String getEntityName(){
          Trace.log("Entity Name not configured , Shadow this method in entity to configure entity name");

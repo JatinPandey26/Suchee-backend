@@ -16,7 +16,8 @@ public class Member extends VersionedEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name="team_id")
     private Team team;
 
     // a user can be part of many teams

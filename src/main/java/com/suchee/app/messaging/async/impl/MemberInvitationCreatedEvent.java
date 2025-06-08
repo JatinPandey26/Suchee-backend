@@ -5,10 +5,14 @@ import com.suchee.app.enums.EventMessageType;
 import com.suchee.app.messaging.async.AsyncEventPublishType;
 import com.suchee.app.messaging.async.AsyncMessage;
 import com.suchee.app.messaging.async.QueueType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-
-@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class MemberInvitationCreatedEvent extends AsyncMessage<MemberInvitationDto> {
 
     private MemberInvitationDto memberInvitationDto;

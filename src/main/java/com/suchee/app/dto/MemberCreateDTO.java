@@ -9,7 +9,7 @@ import java.util.Set;
 @Data
 public class MemberCreateDTO {
 
-    private Long teamId;
+    private TeamDTO team;
     private UserDTO user;
     private Set<RoleDTO> roles;
     private MemberStatus status;

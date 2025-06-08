@@ -2,6 +2,7 @@ package com.suchee.app.service.impl;
 
 import com.suchee.app.dto.*;
 import com.suchee.app.entity.*;
+import com.suchee.app.enums.MemberInvitationStatus;
 import com.suchee.app.enums.MemberStatus;
 import com.suchee.app.enums.RoleType;
 import com.suchee.app.exception.ResourceAlreadyExistsException;
@@ -14,8 +15,10 @@ import com.suchee.app.repository.TeamRepository;
 import com.suchee.app.security.SecurityContext;
 import com.suchee.app.service.*;
 import com.suchee.app.utils.StorageInfoBuilder;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,7 @@ public class TeamServiceImpl implements TeamService {
     private final MemberService memberService;
 
 
+    @Transactional
     @Override
     public TeamDTO createTeam(TeamCreationDTO teamCreationDTO) {
 
@@ -60,28 +64,43 @@ public class TeamServiceImpl implements TeamService {
         RoleDTO role = this.roleService.findByRoleType(RoleType.TEAM_ADMIN);
 
         member.setRoles(Set.of(role));
-        member.setTeamId(savedTeam.getId());
+        member.setTeam(this.teamMapper.toDto(savedTeam));
         member.setStatus(MemberStatus.ACTIVE);
 
         this.memberService.createMember(member);
 
         // process Avatar
+        // avatar will be processed on UI
 
-        if (teamCreationDTO.getAvatar() != null && !teamCreationDTO.getAvatar().isEmpty()) {
-            AttachmentStorageInfoDto attachmentStorageInfo = StorageInfoBuilder.teamAttachmentPath(String.valueOf(savedTeam.getId()),teamCreationDTO.getAvatar().getOriginalFilename());
-            Attachment avatar = this.attachmentService.process(teamCreationDTO.getAvatar(), attachmentStorageInfo);
-
-            savedTeam.setAvatar(avatar);
-            savedTeam = this.teamRepository.save(savedTeam);
-        }
-
-
-
+//        if (teamCreationDTO.getAvatar() != null && !teamCreationDTO.getAvatar().isEmpty()) {
+//            AttachmentStorageInfoDto attachmentStorageInfo = StorageInfoBuilder.teamAttachmentPath(String.valueOf(savedTeam.getId()),teamCreationDTO.getAvatar().getOriginalFilename());
+//            Attachment avatar = this.attachmentService.process(teamCreationDTO.getAvatar(), attachmentStorageInfo);
+//
+//            savedTeam.setAvatar(avatar);
+//            savedTeam = this.teamRepository.save(savedTeam);
+//        }
 
         TeamDTO teamDTO = this.teamMapper.toDto(savedTeam);
 
+        if(!teamCreationDTO.getInvitations().isEmpty()){
+            // create invitations
+            teamCreationDTO.getInvitations().forEach(
+                    ( mem) -> {
+                        MemberInvitationDto memberInvitationDto = new MemberInvitationDto();
+                        memberInvitationDto.setTeam(teamDTO);
+                        memberInvitationDto.setStatus(MemberInvitationStatus.PENDING);
+                        memberInvitationDto.setEmail(mem.getEmail());
+                        memberInvitationDto.setRole(this.roleService.findByRoleType(mem.getRole()));
+
+                        this.memberInvitationService.createMemberInvitation(memberInvitationDto);
+                    }
+            );
+
+        }
+
+
         if(Trace.team){
-            Trace.log("Team created with Id : " + teamDTO.getId() + " , Name : " + teamDTO.getTeamName());
+            Trace.log("Team created with Id : " + teamDTO.getId() + " , Name : " + teamDTO.getName());
         }
 
         return teamDTO;
@@ -117,7 +136,7 @@ public class TeamServiceImpl implements TeamService {
         TeamDTO teamDTO = this.teamMapper.toDto(updatedTeam);
 
         if (Trace.team) {
-            Trace.log("Team updated with Id : " + teamDTO.getId() + " , Name : " + teamDTO.getTeamName());
+            Trace.log("Team updated with Id : " + teamDTO.getId() + " , Name : " + teamDTO.getName());
         }
 
         return teamDTO;
@@ -179,7 +198,7 @@ public class TeamServiceImpl implements TeamService {
         Page<Team> teamPage;
 
         if (searchKeyword != null && !searchKeyword.isBlank()) {
-            teamPage = teamRepository.findByTeamNameContainingIgnoreCase(searchKeyword, pageable);
+            teamPage = teamRepository.findByNameContainingIgnoreCase(searchKeyword, pageable);
         } else {
             teamPage = teamRepository.findAll(pageable);
         }
@@ -204,12 +223,21 @@ public class TeamServiceImpl implements TeamService {
 
         // get team in which current user is a member
 
-        return null;
+        long userId = SecurityContext.getCurrentUserId();
+
+        Page<Team> myTeams = this.memberRepository.findTeamsByUserId(userId,searchKeyWord,pageable);
+
+        List<TeamDTO> dtoList = myTeams
+                .stream()
+                .map(teamMapper::toDto)
+                .toList();
+
+        return new PageImpl<>(dtoList, pageable, myTeams.getTotalElements());
     }
 
     @Override
     public Page<TeamDTO> getMyTeams(Pageable pageable) {
-        return null;
+        return getMyTeams(null,pageable);
     }
 
     @Override

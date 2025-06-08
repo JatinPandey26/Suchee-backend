@@ -10,10 +10,10 @@ import java.time.LocalDate;
 public class UserCreateDTO {
 
     @NotBlank(message = "First name is required")
-    @Size(max = 50, message = "First name must be at most 50 characters")
+    @Size(min=3,max = 50, message = "First name must be btw 3 to 50 characters")
     private String firstName;
 
-    @NotBlank(message = "Last name is required")
+
     @Size(max = 50, message = "Last name must be at most 50 characters")
     private String lastName;
 
@@ -29,4 +29,5 @@ public class UserCreateDTO {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
+    private String avatar;
 }

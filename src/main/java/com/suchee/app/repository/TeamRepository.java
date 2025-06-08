@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface TeamRepository extends JpaRepository<Team,Long> {
-    Page<Team> findByTeamNameContainingIgnoreCase(String teamName, Pageable pageable);
+    Page<Team> findByNameContainingIgnoreCase(String teamName, Pageable pageable);
 }

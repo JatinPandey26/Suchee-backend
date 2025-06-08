@@ -1,9 +1,7 @@
 package com.suchee.app.config;
 
-import com.suchee.app.security.AuthenticationTokenGenerator;
-import com.suchee.app.security.BasicAuthenticationTokenGenerator;
-import com.suchee.app.security.JwtAuthenticationFilter;
-import com.suchee.app.security.JwtService;
+import com.suchee.app.security.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,17 +14,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
 
     @Value("${auth.token.generator-type:basic}")
     private String generatorType;
 
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CookieManagementFilter cookieManagementFilter;
 
-    SecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter){
-        this.jwtAuthenticationFilter=jwtAuthenticationFilter;
-    }
 
     /**
      * Configures the application's HTTP security settings.
@@ -42,9 +39,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login","/api/userAccount/create").permitAll()
+                        .requestMatchers("/api/auth/login","/api/userAccount/create","/api/utility/public/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
@@ -53,6 +50,7 @@ public class SecurityConfiguration {
         if(generatorType.equals("jwt"))
         {
             http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            http.addFilterBefore(cookieManagementFilter,jwtAuthenticationFilter.getClass());
         }
         if(generatorType.equals("basic")){
             http.httpBasic(Customizer.withDefaults());

@@ -48,7 +48,7 @@ public class MemberInvitationCreatedHandler implements AsyncHandler<MemberInvita
 
         // Prepare template variables map
         Map<String, Object> memberInvitationMailData = new HashMap<>();
-        memberInvitationMailData.put("teamName", memberInvitationDto.getTeam().getTeamName());
+        memberInvitationMailData.put("teamName", memberInvitationDto.getTeam().getName());
         memberInvitationMailData.put("invitationLink", applicationLinks.getApplicationBaseUrl());
 
         Map<NotificationType, Map<String, Object>> templateData = new HashMap<>();
@@ -56,7 +56,7 @@ public class MemberInvitationCreatedHandler implements AsyncHandler<MemberInvita
 
         // Prepare subject map
         Map<NotificationType, String> subjectMap = new HashMap<>();
-        subjectMap.put(NotificationType.EMAIL, "You are invited to : " + memberInvitationDto.getTeam().getTeamName());
+        subjectMap.put(NotificationType.EMAIL, "You are invited to : " + memberInvitationDto.getTeam().getName());
 
         NotificationRequest memberInvitationNotificationRequest = NotificationRequest.builder()
                 .recipients(new String[]{memberInvitationDto.getEmail()})

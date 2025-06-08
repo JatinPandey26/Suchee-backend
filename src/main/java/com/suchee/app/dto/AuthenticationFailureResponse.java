@@ -9,6 +9,5 @@ public class AuthenticationFailureResponse extends AuthenticationResponse {
 
     boolean isSuccess=false;
     String errorCause;
-    private LocalDateTime timestamp;
 
 }
